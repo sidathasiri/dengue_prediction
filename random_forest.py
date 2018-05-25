@@ -20,13 +20,13 @@ train_labels = pd.read_csv('./data/dengue_labels_train.csv')
 test_data = pd.read_csv('./data/dengue_features_test.csv')
 submission = pd.read_csv('./output/submission_format.csv')
 
-#calcuate month from week start date
-train_features['weekofyear'] = train_features['week_start_date'].apply(lambda date: int(str(date).split('-')[1]))
-test_data['weekofyear'] = test_data['week_start_date'].apply(lambda date: int(str(date).split('-')[1]))
-
-#renme the weekofyear to month
-train_features = train_features.rename(columns={'weekofyear': 'month'})
-test_data = test_data.rename(columns={'weekofyear': 'month'})
+# #calcuate month from week start date
+# train_features['weekofyear'] = train_features['week_start_date'].apply(lambda date: int(str(date).split('-')[1]))
+# test_data['weekofyear'] = test_data['week_start_date'].apply(lambda date: int(str(date).split('-')[1]))
+#
+# #renme the weekofyear to month
+# train_features = train_features.rename(columns={'weekofyear': 'month'})
+# test_data = test_data.rename(columns={'weekofyear': 'month'})
 
 #drop unnecessary columns
 train_features = train_features.drop(columns=['week_start_date'])
@@ -37,11 +37,11 @@ test_data = test_data.drop(columns=['week_start_date'])
 train_features = train_features.fillna(-9999)
 test_data = test_data.fillna(-9999)
 
+le = preprocessing.LabelEncoder()
+le.fit(train_features['city'])
+train_features['city'] = le.transform(train_features['city'])
+test_data['city'] = le.transform(test_data['city'])
 
-# le = preprocessing.LabelEncoder()
-# le.fit(train_features['city'])
-# train_features['city'] = le.transform(train_features['city'])
-# test_data['city'] = le.transform(test_data['city'])
 
 #split data
 X_train, X_test, y_train, y_test = train_test_split(
