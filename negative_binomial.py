@@ -14,6 +14,10 @@ dengue_features_test  = pd.read_csv('./data/dengue_features_test.csv')
 submission = pd.read_csv('./output/submission_format.csv')
 dengue_train = pd.merge(dengue_labels_train, dengue_features_train, on=['city','year','weekofyear'])
 
+
+dengue_train.drop('precipitation_amt_mm', axis=1, inplace=True)
+dengue_train.drop('reanalysis_avg_temp_k', axis=1, inplace=True)
+
 dengue_train_sj = dengue_train[dengue_train.city == 'sj'].copy()
 dengue_train_iq = dengue_train[dengue_train.city == 'iq'].copy()
 
@@ -149,6 +153,6 @@ submission = pd.read_csv("./output/submission_format.csv",
                          index_col=[0, 1, 2])
 
 submission.total_cases = np.concatenate([sj_predictions, iq_predictions])
-submission.to_csv("./output/Model_1_Forecasted_Values.csv")
+submission.to_csv("./output/Model_1_Forecasted_Valuessssssssss.csv")
 
 
