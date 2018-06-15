@@ -8,81 +8,78 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_selection import RFE
 from sklearn import preprocessing
 
-dengue_features_train  = pd.read_csv('./data/dengue_features_train.csv')
-dengue_labels_train  = pd.read_csv('./data/dengue_labels_train.csv')
-dengue_features_test  = pd.read_csv('./data/dengue_features_test.csv')
+dengue_features_train  = pd.read_csv('./data/Pre-Processed Data/features_train_preprocessed.csv')
+dengue_features_test  = pd.read_csv('./data/Pre-Processed Data/features_test_preprocessed.csv')
 submission = pd.read_csv('./output/submission_format.csv')
-dengue_train = pd.merge(dengue_labels_train, dengue_features_train, on=['city','year','weekofyear'])
 
+# dengue_train.drop('precipitation_amt_mm', axis=1, inplace=True)
+# dengue_train.drop('reanalysis_avg_temp_k', axis=1, inplace=True)
 
-dengue_train.drop('precipitation_amt_mm', axis=1, inplace=True)
-dengue_train.drop('reanalysis_avg_temp_k', axis=1, inplace=True)
-
-dengue_train_sj = dengue_train[dengue_train.city == 'sj'].copy()
-dengue_train_iq = dengue_train[dengue_train.city == 'iq'].copy()
+dengue_train_sj = dengue_features_train[dengue_features_train.city == 'sj'].copy()
+dengue_train_iq = dengue_features_train[dengue_features_train.city == 'iq'].copy()
 
 dengue_test_sj = dengue_features_test[dengue_features_test.city == 'sj'].copy()
 dengue_test_iq = dengue_features_test[dengue_features_test.city == 'iq'].copy()
 
-dengue_train_sj.fillna(method='ffill', inplace=True)
-dengue_train_iq.fillna(method='ffill', inplace=True)
+# dengue_train_sj.fillna(method='ffill', inplace=True)
+# dengue_train_iq.fillna(method='ffill', inplace=True)
 
-dengue_test_sj.fillna(method='ffill', inplace=True)
-dengue_test_iq.fillna(method='ffill', inplace=True)
+# dengue_test_sj.fillna(method='ffill', inplace=True)
+# dengue_test_iq.fillna(method='ffill', inplace=True)
 
-sj_correlations = dengue_train_sj.corr()
-iq_correlations = dengue_train_iq.corr()
+# sj_correlations = dengue_train_sj.corr()
+# iq_correlations = dengue_train_iq.corr()
 
-# Remove `week_start_date` string.
-dengue_train_sj.drop('reanalysis_tdtr_k', axis=1, inplace=True)
-dengue_train_iq.drop('reanalysis_tdtr_k', axis=1, inplace=True)
+# # Remove `week_start_date` string.
+# dengue_train_sj.drop('reanalysis_tdtr_k', axis=1, inplace=True)
+# dengue_train_iq.drop('reanalysis_tdtr_k', axis=1, inplace=True)
 
-dengue_train_sj.drop('year', axis=1, inplace=True)
-dengue_train_iq.drop('year', axis=1, inplace=True)
+# dengue_train_sj.drop('year', axis=1, inplace=True)
+# dengue_train_iq.drop('year', axis=1, inplace=True)
 
-dengue_train_sj.drop('ndvi_ne', axis=1, inplace=True)
-dengue_train_iq.drop('ndvi_ne', axis=1, inplace=True)
+# dengue_train_sj.drop('ndvi_ne', axis=1, inplace=True)
+# dengue_train_iq.drop('ndvi_ne', axis=1, inplace=True)
 
-dengue_train_sj.drop('reanalysis_max_air_temp_k', axis=1, inplace=True)
-dengue_train_iq.drop('reanalysis_max_air_temp_k', axis=1, inplace=True)
+# dengue_train_sj.drop('reanalysis_max_air_temp_k', axis=1, inplace=True)
+# dengue_train_iq.drop('reanalysis_max_air_temp_k', axis=1, inplace=True)
 
-dengue_train_sj.drop('ndvi_se', axis=1, inplace=True)
-dengue_train_iq.drop('ndvi_se', axis=1, inplace=True)
+# dengue_train_sj.drop('ndvi_se', axis=1, inplace=True)
+# dengue_train_iq.drop('ndvi_se', axis=1, inplace=True)
 
-dengue_train_sj.drop('station_diur_temp_rng_c', axis=1, inplace=True)
-dengue_train_iq.drop('station_diur_temp_rng_c', axis=1, inplace=True)
+# dengue_train_sj.drop('station_diur_temp_rng_c', axis=1, inplace=True)
+# dengue_train_iq.drop('station_diur_temp_rng_c', axis=1, inplace=True)
 
-dengue_train_sj.drop('weekofyear', axis=1, inplace=True)
-dengue_train_iq.drop('weekofyear', axis=1, inplace=True)
+# dengue_train_sj.drop('weekofyear', axis=1, inplace=True)
+# dengue_train_iq.drop('weekofyear', axis=1, inplace=True)
 
-dengue_train_sj.drop('ndvi_nw', axis=1, inplace=True)
-dengue_train_iq.drop('ndvi_nw', axis=1, inplace=True)
+# dengue_train_sj.drop('ndvi_nw', axis=1, inplace=True)
+# dengue_train_iq.drop('ndvi_nw', axis=1, inplace=True)
 
 
-# Remove `week_start_date` string.# Remov
-dengue_test_sj.drop('reanalysis_tdtr_k', axis=1, inplace=True)
-dengue_test_iq.drop('reanalysis_tdtr_k', axis=1, inplace=True)
+# # Remove `week_start_date` string.# Remov
+# dengue_test_sj.drop('reanalysis_tdtr_k', axis=1, inplace=True)
+# dengue_test_iq.drop('reanalysis_tdtr_k', axis=1, inplace=True)
 
-dengue_test_sj.drop('year', axis=1, inplace=True)
-dengue_test_iq.drop('year', axis=1, inplace=True)
+# dengue_test_sj.drop('year', axis=1, inplace=True)
+# dengue_test_iq.drop('year', axis=1, inplace=True)
 
-dengue_test_sj.drop('ndvi_ne', axis=1, inplace=True)
-dengue_test_iq.drop('ndvi_ne', axis=1, inplace=True)
+# dengue_test_sj.drop('ndvi_ne', axis=1, inplace=True)
+# dengue_test_iq.drop('ndvi_ne', axis=1, inplace=True)
 
-dengue_test_sj.drop('reanalysis_max_air_temp_k', axis=1, inplace=True)
-dengue_test_iq.drop('reanalysis_max_air_temp_k', axis=1, inplace=True)
+# dengue_test_sj.drop('reanalysis_max_air_temp_k', axis=1, inplace=True)
+# dengue_test_iq.drop('reanalysis_max_air_temp_k', axis=1, inplace=True)
 
-dengue_test_sj.drop('ndvi_se', axis=1, inplace=True)
-dengue_test_iq.drop('ndvi_se', axis=1, inplace=True)
+# dengue_test_sj.drop('ndvi_se', axis=1, inplace=True)
+# dengue_test_iq.drop('ndvi_se', axis=1, inplace=True)
 
-dengue_test_sj.drop('station_diur_temp_rng_c', axis=1, inplace=True)
-dengue_test_iq.drop('station_diur_temp_rng_c', axis=1, inplace=True)
+# dengue_test_sj.drop('station_diur_temp_rng_c', axis=1, inplace=True)
+# dengue_test_iq.drop('station_diur_temp_rng_c', axis=1, inplace=True)
 
-dengue_test_sj.drop('weekofyear', axis=1, inplace=True)
-dengue_test_iq.drop('weekofyear', axis=1, inplace=True)
+# dengue_test_sj.drop('weekofyear', axis=1, inplace=True)
+# dengue_test_iq.drop('weekofyear', axis=1, inplace=True)
 
-dengue_test_sj.drop('ndvi_nw', axis=1, inplace=True)
-dengue_test_iq.drop('ndvi_nw', axis=1, inplace=True)
+# dengue_test_sj.drop('ndvi_nw', axis=1, inplace=True)
+# dengue_test_iq.drop('ndvi_nw', axis=1, inplace=True)
 
 sj_train_subtrain = dengue_train_sj.head(800)
 sj_train_subtest = dengue_train_sj.tail(dengue_train_sj.shape[0] - 800)
@@ -102,7 +99,7 @@ import statsmodels.formula.api as smf
 
 def get_best_model(train, test):
     # Step 1: specify the form of the model
-    model_formula = "total_cases ~ 1 + " \
+    model_formula = "total_cases_y ~ 1 + " \
                     "reanalysis_specific_humidity_g_per_kg + " \
                     "reanalysis_dew_point_temp_k + " \
                     "reanalysis_min_air_temp_k + " \
@@ -110,7 +107,7 @@ def get_best_model(train, test):
                     "station_max_temp_c + " \
                     "station_avg_temp_c"
 
-    grid = 10 ** np.arange(-8, -3, dtype=np.float64)
+    grid = 10 ** np.arange(-20, 0, dtype=np.float64)
 
     best_alpha = []
     best_score = 1000
@@ -123,7 +120,7 @@ def get_best_model(train, test):
 
         results = model.fit()
         predictions = results.predict(test).astype(int)
-        score = eval_measures.meanabs(predictions, test.total_cases)
+        score = eval_measures.meanabs(predictions, test.total_cases_y)
 
         if score < best_score:
             best_alpha = alpha
@@ -153,6 +150,6 @@ submission = pd.read_csv("./output/submission_format.csv",
                          index_col=[0, 1, 2])
 
 submission.total_cases = np.concatenate([sj_predictions, iq_predictions])
-submission.to_csv("./output/Model_1_Forecasted_Valuessssssssss.csv")
+submission.to_csv("./output/rabbie-sub.csv")
 
 
